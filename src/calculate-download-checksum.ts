@@ -57,7 +57,11 @@ async function resolveRedirect(
       },
       (res) => {
         res.resume() // ensure the response body has been fully read
-        if (res.statusCode == 302) {
+        if (
+          res.statusCode != null &&
+          res.statusCode >= 300 &&
+          res.statusCode < 400
+        ) {
           const loc = res.headers['location']
           if (loc != null) {
             resolve(new URL(loc))
